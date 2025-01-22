@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useState } from "react"
+import { Suspense, useState, useEffect } from "react"
 
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
@@ -11,6 +11,14 @@ import "../../../styles/globals.css"
 
 import PaginatedProducts from "./paginated-products"
 import Image from "next/image"
+
+const timeZones = [
+  { label: "Paris", timeZone: "Europe/Paris" },
+  { label: "Japan", timeZone: "Asia/Tokyo" },
+  { label: "Lisbon", timeZone: "Europe/Lisbon" },
+  { label: "New York", timeZone: "America/New_York" },
+  { label: "Sydney", timeZone: "Australia/Sydney" },
+]
 
 const WaitlistTemplate = ({
   sortBy,
@@ -31,6 +39,9 @@ const WaitlistTemplate = ({
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isInvitationCodeModalOpen, setIsInvitationCodeModalOpen] =
     useState(false)
+
+  const [selectedRegion, setSelectedRegion] = useState("Paris")
+  const [currentTime, setCurrentTime] = useState("")
 
   const handleSendEmailToClient = async () => {
     if (!email) {
@@ -70,6 +81,28 @@ const WaitlistTemplate = ({
     setIsInvitationCodeModalOpen(true)
   }
 
+  useEffect(() => {
+    const updateTime = () => {
+      const timeZone = timeZones.find(
+        (zone) => zone.label === selectedRegion
+      )?.timeZone
+      if (timeZone) {
+        const now = new Date()
+        const formatter = new Intl.DateTimeFormat("en-US", {
+          timeZone,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })
+        setCurrentTime(formatter.format(now))
+      }
+    }
+
+    updateTime()
+    const interval = setInterval(updateTime, 1000) // Update every second
+    return () => clearInterval(interval)
+  }, [selectedRegion])
+
   return (
     <>
       <main className="overflow-y-hidden">
@@ -104,9 +137,49 @@ const WaitlistTemplate = ({
 
           {/* Div 2 */}
           <div className="div2 px-16 pb-6">
-            <div className="">
-              <div className="my-4 flex justify-end">
-                <div className="text-xl text-red-600">PARIS 12:59</div>
+            <div className="space-y-2">
+              <div className="my-2 flex justify-end">
+                <div className="text-xl text-red-600">
+                  <div className="group relative cursor-pointer">
+                    <div className="flex items-center justify-between space-x-5 bg-white px-4">
+                      <div className="flex flex-row gap-2 items-center">
+                        <a className="menu-hover my-2 py-2 text-xl text-red-600 font-base lg:mx-4">
+                          {selectedRegion}
+                        </a>
+                        {/* <span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="h-6 w-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                            />
+                          </svg>
+                        </span> */}
+                      </div>
+                      <div>{currentTime}</div>
+                    </div>
+
+                    {/* Dropdown */}
+                    <div className="invisible absolute z-50 flex w-full flex-col bg-white py-1 px-4 text-red-600 shadow-xl group-hover:visible">
+                      {timeZones.map((zone) => (
+                        <a
+                          key={zone.label}
+                          className="my-2 block  py-1 font-base text-red-600 md:mx-2 cursor-pointer"
+                          onClick={() => setSelectedRegion(zone.label)}
+                        >
+                          {zone.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="w-fit rounded-full mb-6 hover:animate-bounce-up cursor-pointer">
                 <Image
@@ -116,7 +189,7 @@ const WaitlistTemplate = ({
                   height={150}
                 />
               </div>
-              <h1 className=" text-left text-4xl font-sans md:text-5xl w-[700px] text-red-600">
+              <h1 className="text-left text-4xl font-sans md:text-5xl w-[700px] text-red-600">
                 THE ULTIMATE CURATION OF DURABLE AND TECH-ORIENTED CONSUMER
                 PRODUCTS FOR THE MOST DEMANDING INDIVIDUALS.
               </h1>
@@ -142,7 +215,7 @@ const WaitlistTemplate = ({
                         key={index}
                         type="text"
                         maxLength={1}
-                        className="w-10 h-12 text-center border border-red-600 rounded-xl bg-transparent text-red-600 focus:outline-none"
+                        className="w-10 h-16 text-center border border-red-600 rounded-xl bg-transparent text-red-600 focus:outline-none"
                         value={invitationCode[index] || ""}
                         onChange={(e) => {
                           const newCode = [...invitationCode]
@@ -168,7 +241,7 @@ const WaitlistTemplate = ({
               </div>
 
               {/* Right Column */}
-              <div className="relative flex flex-col items-start justify-center px-4 py-4 gap-3 mt-3">
+              <div className="relative flex flex-col items-start justify-center px-4 py-4 gap-4 mt-3">
                 <p className="text-base uppercase text-left self-start ml-4 font-semibold text-red-600">
                   JOIN THE WAITLIST
                 </p>
