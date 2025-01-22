@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useState, useEffect } from "react"
+import React, { Suspense, useState, useEffect } from "react"
 
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
@@ -118,9 +118,21 @@ const WaitlistTemplate = ({
 
         <div className="w-full overflow-hidden py-1">
           <div className="animate-marquee whitespace-nowrap text-red-600 text-xs">
-            {Array(10).fill("COMING SOON • WAITLIST • ").join("")}
+            {Array(10)
+              .fill(
+                <>
+                  <span className="mr-4 tracking-wider">COMING SOON</span>
+                  <span className="mr-4 tracking-wider">•</span>
+                  <span className="mr-4 tracking-wider">WAITLIST</span>
+                  <span className="mr-4 tracking-wider">•</span>
+                </>
+              )
+              .map((item, index) => (
+                <React.Fragment key={index}>{item}</React.Fragment>
+              ))}
           </div>
         </div>
+
         <div className="parent h-screen w-full overflow-y-hidden pb-12 ">
           {/* Div 1 */}
           <div className="div1">
@@ -269,9 +281,21 @@ const WaitlistTemplate = ({
           <div className="div4 flex items-center justify-center text-xl font-bold"></div>
 
           {/* Bottom Banner */}
-          <div className="fixed bottom-0 w-full overflow-hidden  py-1 ">
-            <div className="animate-marquee whitespace-nowrap text-xs text-red-600">
-              {Array(10).fill("COMING SOON • WAITLIST • ").join("")}
+          <div className="fixed bottom-0 w-full overflow-hidden py-1">
+            <div className="animate-marquee whitespace-nowrap text-xs text-red-600 tracking-wide">
+              {Array(10)
+                .fill(
+                  <>
+                    <span className="mr-4 tracking-wider">COMING SOON</span>{" "}
+                    {/* Add margin between elements */}
+                    <span className="mr-4 tracking-wider">•</span>
+                    <span className="mr-4 tracking-wider">WAITLIST</span>
+                    <span className="mr-4 tracking-wider">•</span>
+                  </>
+                )
+                .map((item, index) => (
+                  <React.Fragment key={index}>{item}</React.Fragment>
+                ))}
             </div>
           </div>
         </div>
