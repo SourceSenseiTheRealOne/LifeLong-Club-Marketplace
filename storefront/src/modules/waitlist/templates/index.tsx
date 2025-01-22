@@ -179,7 +179,7 @@ const WaitlistTemplate = ({
                     </div>
 
                     {/* Dropdown */}
-                    <div className="invisible absolute z-50 flex  flex-col text-center bg-white py-1 px-4 text-red-600 shadow-xl group-hover:visible">
+                    <div className="invisible absolute z-50 mr-2 flex  flex-col text-center bg-white py-1 px-4 text-red-600 shadow-xl group-hover:visible">
                       {timeZones.map((zone) => (
                         <a
                           key={zone.label}
