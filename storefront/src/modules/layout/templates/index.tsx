@@ -8,9 +8,9 @@ const Layout: React.FC<{
 }> = ({ children }) => {
   return (
     <div>
-      <Nav />
+      {/* <Nav /> */}
       <main className="relative">{children}</main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

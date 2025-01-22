@@ -110,3 +110,87 @@
     @apply text-[32px] leading-[44px] font-semibold;
   }
 }
+
+.animate-marquee {
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+html,
+body,
+main {
+  overflow: hidden;
+}
+
+.parent {
+  display: grid;
+  width: 100%;
+
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 0px;
+}
+
+.div1 {
+  grid-column: span 2 / span 2;
+  grid-row: span 5 / span 5;
+  border: 0.25px solid red;
+}
+
+.div2 {
+  grid-column: span 3 / span 3;
+  grid-row: span 3 / span 3;
+  grid-column-start: 3;
+  border-bottom: 0.25px solid red;
+  border-top: 0.25px solid red;
+  border-right: 0.25px solid red;
+}
+
+.div3 {
+  grid-column: span 3 / span 3;
+  grid-column-start: 3;
+  grid-row-start: 4;
+  border-bottom: 0.25px solid red;
+  border-right: 0.25px solid red;
+}
+
+.div4 {
+  grid-column: span 3 / span 3;
+  grid-column-start: 3;
+  grid-row-start: 5;
+  border-bottom: 0.25px solid red;
+  border-right: 0.25px solid red;
+}
+
+html,
+body,
+a,
+img,
+[role="button"],
+button,
+[type="button"]:not(:disabled) {
+  cursor: none;
+}
+
+#jelly-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 38px; /* Adjust based on the size of your PNG */
+  height: 38px; /* Adjust based on the size of your PNG */
+  background: url("https://res.cloudinary.com/dzxalfzwh/image/upload/v1737506493/Vector_qtamfx.png") no-repeat center center;
+  background-size: contain;
+  transform-origin: 50% 50%;
+  transform: translate(-50%, -50%);
+  will-change: width, height, transform, border;
+  z-index: 99999;
+  pointer-events: none;
+}

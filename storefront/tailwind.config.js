@@ -140,8 +140,14 @@ module.exports = {
           "0%": { transform: "translateY(-100%)" },
           "100%": { transform: "translateY(0)" },
         },
+        bounceUp: {
+          "0%": { transform: "translateY(0) rotate(0)" },
+          "50%": { transform: "translateY(-10px) rotate(-3deg)" },
+          "100%": { transform: "translateY(0) rotate(0)" },
+        },
       },
       animation: {
+        "bounce-up": "bounceUp 0.5s ease-in-out",
         ring: "ring 2.2s cubic-bezier(0.5, 0, 0.5, 1) infinite",
         "fade-in-right":
           "fade-in-right 0.3s cubic-bezier(0.5, 0, 0.5, 1) forwards",
