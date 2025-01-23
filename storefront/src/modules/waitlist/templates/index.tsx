@@ -183,7 +183,7 @@ const WaitlistTemplate = ({
                       {timeZones.map((zone) => (
                         <a
                           key={zone.label}
-                          className="my-2 block  py-1 font-base text-red-600 md:mx-2 "
+                          className="my-2 block  py-1 font-base text-red-600 md:mx-2"
                           onClick={() => setSelectedRegion(zone.label)}
                         >
                           {zone.label}
