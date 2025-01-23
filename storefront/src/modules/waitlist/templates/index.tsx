@@ -152,7 +152,7 @@ const WaitlistTemplate = ({
             <div className="space-y-2">
               <div className="my-2 flex justify-end">
                 <div className="text-xl text-red-600">
-                  <div className="group relative cursor-pointer">
+                  <div className="group relative ">
                     <div className="flex items-center justify-between space-x-5 bg-white px-4">
                       <div className="flex flex-row gap-2 items-center">
                         <a className="menu-hover my-2 py-2 text-xl text-red-600 font-base lg:mx-4">
@@ -183,7 +183,7 @@ const WaitlistTemplate = ({
                       {timeZones.map((zone) => (
                         <a
                           key={zone.label}
-                          className="my-2 block  py-1 font-base text-red-600 md:mx-2 cursor-pointer"
+                          className="my-2 block  py-1 font-base text-red-600 md:mx-2"
                           onClick={() => setSelectedRegion(zone.label)}
                         >
                           {zone.label}

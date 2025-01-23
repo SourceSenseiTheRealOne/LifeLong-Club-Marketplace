@@ -1,10 +1,8 @@
-'use client'
+"use client"
 
 import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
 import "styles/globals.css"
-
-
 
 import { gsap } from "gsap"
 import { useGSAP } from "@gsap/react"
@@ -54,18 +52,18 @@ export default function RootLayout(props: { children: React.ReactNode }) {
 
       // Update position and rotation (without affecting the scale)
       function update() {
-        const rotation = getAngle(vel.x, vel.y)
         const scale = getScale(vel.x, vel.y)
 
-        // Apply jelly-like effect (position and rotation), keeping scale separate
+        // Apply jelly-like effect (position only)
         setX(pos.x)
         setY(pos.y)
-        setRotation(rotation)
 
         // If not hovering, apply the jelly scale effect
         if (!isHoveringClickable) {
-          setScaleX(1 + scale)
-          setScaleY(1 - scale)
+          const clampedScaleX = Math.min(1 + scale, 1.25) // Clamp max scale
+          const clampedScaleY = Math.max(1 - scale, 0.75) // Clamp min scale
+          setScaleX(clampedScaleX)
+          setScaleY(clampedScaleY)
         }
       }
 
@@ -86,6 +84,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       // Handle mouse move event
       window.addEventListener("mousemove", (e) => {
         const { clientX, clientY } = e
+
         targetPos.x = clientX
         targetPos.y = clientY
 

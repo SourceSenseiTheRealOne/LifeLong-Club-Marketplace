@@ -188,8 +188,6 @@ button,
   height: 38px; /* Adjust based on the size of your PNG */
   background: url("https://res.cloudinary.com/dzxalfzwh/image/upload/v1737506493/Vector_qtamfx.png") no-repeat center center;
   background-size: contain;
-  transform-origin: 50% 50%;
-  transform: translate(-50%, -50%);
   will-change: width, height, transform, border;
   z-index: 99999;
   pointer-events: none;
