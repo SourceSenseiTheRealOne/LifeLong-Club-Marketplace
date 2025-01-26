@@ -11,6 +11,7 @@ import "../../../styles/globals.css"
 
 import PaginatedProducts from "./paginated-products"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 const timeZones = [
   { label: "Paris", timeZone: "Europe/Paris" },
@@ -42,6 +43,8 @@ const WaitlistTemplate = ({
 
   const [selectedRegion, setSelectedRegion] = useState("Paris")
   const [currentTime, setCurrentTime] = useState("")
+
+  const router = useRouter() // Initialize the router
 
   const handleSendEmailToClient = async () => {
     if (!email) {
@@ -76,9 +79,38 @@ const WaitlistTemplate = ({
     }
   }
 
-  const handleOpenInvitationCodeModal = () => {
-    // Call the function to open the invitation code modal
-    setIsInvitationCodeModalOpen(true)
+  const handleOpenInvitationCodeModal = async () => {
+    if (loading) return // Prevent duplicate submissions
+
+    setLoading(true) // Set loading to true while the API request is in progress
+
+    try {
+      const response = await fetch("/api/code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code: invitationCode }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        // If the code is valid, log "correct"
+        console.log("Correct code!")
+
+        // Navigate to the store page
+        router.push("/store")
+      } else {
+        // If the code is invalid, show the modal with the error
+        console.log("Invalid code!")
+        setIsInvitationCodeModalOpen(true)
+      }
+    } catch (error) {
+      console.error("Error verifying code:", error)
+    } finally {
+      setLoading(false) // Reset loading state
+    }
   }
 
   useEffect(() => {

@@ -40,7 +40,7 @@ async function getRegionMap() {
       })
     })
 
-    regionMapCache.regionMapUpdated = Date.now();
+    regionMapCache.regionMapUpdated = Date.now()
   }
 
   // console.log(regionMapCache.regionMap, "regionMapCache.regionMap")
@@ -92,6 +92,8 @@ export async function middleware(request: NextRequest) {
   const onboardingCookie = request.cookies.get("_medusa_onboarding")
   const cartIdCookie = request.cookies.get("_medusa_cart_id")
 
+  const invitationCodeCookie = request.cookies.get("_medusa_invitation_code")
+
   const regionMap = await getRegionMap()
 
   const countryCode = regionMap && (await getCountryCode(request, regionMap))
@@ -140,9 +142,17 @@ export async function middleware(request: NextRequest) {
     response.cookies.set("_medusa_onboarding", "true", { maxAge: 60 * 60 * 24 })
   }
 
-  // Redirect users visiting the homepage ("/") to the waitlist page
+  // If an invitation code cookie is present, redirect to the homepage.
+  if (invitationCodeCookie) {
+    if (request.nextUrl.pathname === "/store") {
+      const redirectUrl = `${request.nextUrl.origin}/${countryCode}/store`
+      return NextResponse.redirect(redirectUrl, 307)
+    }
+  }
+
+  // If visiting the homepage ("/") without the invitation code cookie, redirect to the waitlist.
   if (request.nextUrl.pathname === "/") {
-    const redirectUrl = `${request.nextUrl.origin}/waitlist`
+    const redirectUrl = `${request.nextUrl.origin}/${countryCode}/waitlist`
     return NextResponse.redirect(redirectUrl, 307)
   }
 
